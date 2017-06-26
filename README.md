@@ -13,6 +13,3 @@ Installation Instructions
 ### Internet Explorer / Safari / Other
 1. Install Firefox or Chrome
 
-#### List of enhanced Anime Sites
-3. RawrAnime
-4. Moetube
