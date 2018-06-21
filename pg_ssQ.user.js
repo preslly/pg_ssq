@@ -9,44 +9,49 @@
 
 var DiscoveryQueueModal, GenerateQueue = function( queueNumber )
 {
-	DiscoveryQueueModal = ShowBlockingWaitDialog( 'Exploring queue...', 'Generating new discovery queue #' + ++queueNumber );
-	
-	jQuery.post( 'http://store.steampowered.com/explore/generatenewdiscoveryqueue', { sessionid: g_sessionID, queuetype: 0 } ).done( function( data )
+	if( DiscoveryQueueModal )
+	{
+		DiscoveryQueueModal.Dismiss();
+	}
+
+	DiscoveryQueueModal = ShowBlockingWaitDialog( 'Generating the queue...', 'Generating new discovery queue #' + ++queueNumber );
+
+	jQuery.post( 'https://store.steampowered.com/explore/generatenewdiscoveryqueue', { sessionid: g_sessionID, queuetype: 0 } ).done( function( data )
 	{
 		var requests = [], done = 0, errorShown;
-		
+
 		for( var i = 0; i < data.queue.length; i++ )
 		{
-			var request = jQuery.post( 'http://store.steampowered.com/app/10', { appid_to_clear_from_queue: data.queue[ i ], sessionid: g_sessionID } );
-			
+			var request = jQuery.post( 'https://store.steampowered.com/app/10', { appid_to_clear_from_queue: data.queue[ i ], sessionid: g_sessionID } );
+
 			request.done( function()
 			{
 				if( errorShown )
 				{
 					return;
 				}
-				
+
 				DiscoveryQueueModal.Dismiss();
 				DiscoveryQueueModal = ShowBlockingWaitDialog( 'Exploring the queue...', 'Request ' + ++done + ' of ' + data.queue.length );
 			} );
-			
+
 			request.fail( function()
 			{
 				errorShown = true;
-				
+
+				setTimeout( () => GenerateQueue( queueNumber - 1 ), 1000 );
+
 				DiscoveryQueueModal.Dismiss();
-				DiscoveryQueueModal = ShowConfirmDialog( 'Error', 'Failed to clear queue item #' + ++done, 'Try again' ).done( function() {
-					GenerateQueue( queueNumber - 1 );
-				});
+				DiscoveryQueueModal = ShowConfirmDialog( 'Error', 'Failed to clear queue item #' + ++done + '. Trying again in a second.', 'Try again' );
 			} );
-			
+
 			requests.push( request );
 		}
-		
+
 		jQuery.when.apply( jQuery, requests ).done( function()
 		{
 			DiscoveryQueueModal.Dismiss();
-			
+
 			if( queueNumber < 3 )
 			{
 				GenerateQueue( queueNumber );
@@ -61,10 +66,10 @@ var DiscoveryQueueModal, GenerateQueue = function( queueNumber )
 		} );
 	} ).fail( function()
 	{
+		setTimeout( () => GenerateQueue( queueNumber - 1 ), 1000 );
+
 		DiscoveryQueueModal.Dismiss();
-		DiscoveryQueueModal = ShowConfirmDialog( 'Error', 'Failed to generate new queue #' + queueNumber, 'Try again' ).done( function() {
-			GenerateQueue( queueNumber - 1 );
-		});
+		DiscoveryQueueModal = ShowBlockingWaitDialog( 'Error', 'Failed to generate new queue #' + queueNumber + '. Trying again in a second.' );
 	} );
 };
 
@@ -81,3 +86,4 @@ button.addEventListener( 'click', function( )
 {
 	GenerateQueue( 0 );
 }, false );
+
