@@ -1,10 +1,13 @@
+
 // ==UserScript==
-// @name		pg_skip_steamQ
-// @namespace	pg_ssQ
-// @version		1
-// @description		skip steam queue
-// @match		http://store.steampowered.com/explore*
-// @grant		none
+// @name                pg_skip_steamQ
+// @description         skip steam queue
+// @version             2
+// @namespace           https://github.com/preslly/pg_ssq
+// @updateURL           https://github.com/preslly/pg_ssq/blob/master/pg_ssQ.user.js
+// @icon                https://store.steampowered.com/favicon.ico
+// @match               https://store.steampowered.com/explore*
+// @grant               none
 // ==/UserScript==
 
 var DiscoveryQueueModal, GenerateQueue = function( queueNumber )
