@@ -55,7 +55,7 @@ var DiscoveryQueueModal, GenerateQueue = function( queueNumber )
 		{
 			DiscoveryQueueModal.Dismiss();
 
-			if( queueNumber < 3 )
+			if( queueNumber < 1 )
 			{
 				GenerateQueue( queueNumber );
 			}
