@@ -78,7 +78,7 @@ var DiscoveryQueueModal, GenerateQueue = function( queueNumber )
 
 var buttonContainer = document.createElement( 'div' );
 buttonContainer.className = 'discovery_queue_customize_ctn';
-buttonContainer.innerHTML = '<div class="btnv6_blue_hoverfade btn_medium" id="js-cheat-queue"><span>Cheat the queue</span></div><span>Discover the queue three times to get the sale cards</span>';
+buttonContainer.innerHTML = '<div class="btnv6_blue_hoverfade btn_medium" id="js-cheat-queue"><span>Cheat the queue</span></div><span>Discover the queue to get the sale cards</span>';
 
 var container = document.querySelector( '.discovery_queue_customize_ctn' );
 container.parentNode.insertBefore( buttonContainer, container );
